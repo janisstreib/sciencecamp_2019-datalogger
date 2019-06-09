@@ -562,7 +562,7 @@
     )
   )
 
-  (module Module:Arduino_Nano (layer F.Cu) (tedit 58ACAF70) (tstamp 5CF34737)
+  (module Module:Arduino_Nano (layer F.Cu) (tedit 58ACAF70) (tstamp 5CFDDBF7)
     (at 169 106.625 90)
     (descr "Arduino Nano, http://www.mouser.com/pdfdocs/Gravitech_Arduino_Nano3_0.pdf")
     (tags "Arduino Nano")
@@ -570,7 +570,7 @@
     (fp_text reference A1 (at 7.62 -5.08 90) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value "Arduino Nano" (at 10.625 8.6) (layer F.SilkS)
+    (fp_text value "Arduino Nano" (at 7.875 7.5) (layer F.SilkS)
       (effects (font (size 2 2) (thickness 0.3)))
     )
     (fp_line (start 16.75 42.16) (end -1.53 42.16) (layer F.CrtYd) (width 0.05))
