@@ -466,7 +466,7 @@ F 3 "http://www.ti.com/lit/gpn/sn74LVC125" H 8250 5900 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	8550 5900 9000 5900
+	8550 5900 8650 5900
 Wire Wire Line
 	9000 5900 9000 4750
 $Comp
@@ -649,13 +649,6 @@ Connection ~ 9100 3750
 Wire Wire Line
 	6950 4350 7150 4350
 Wire Wire Line
-	6900 5900 7550 5900
-Wire Wire Line
-	7550 5900 7550 3900
-Connection ~ 7550 5900
-Wire Wire Line
-	7550 5900 7650 5900
-Wire Wire Line
 	7150 4350 7150 3900
 Connection ~ 7150 4350
 Wire Wire Line
@@ -663,12 +656,12 @@ Wire Wire Line
 $Comp
 L Device:R R8
 U 1 1 5D03025E
-P 7550 3750
-F 0 "R8" H 7620 3796 50  0000 L CNN
-F 1 "47/50k" H 7620 3705 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 7480 3750 50  0001 C CNN
-F 3 "~" H 7550 3750 50  0001 C CNN
-	1    7550 3750
+P 8650 5750
+F 0 "R8" H 8720 5796 50  0000 L CNN
+F 1 "47/50k" H 8720 5705 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 8580 5750 50  0001 C CNN
+F 3 "~" H 8650 5750 50  0001 C CNN
+	1    8650 5750
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -681,17 +674,6 @@ F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 7080 3750 50  0
 F 3 "~" H 7150 3750 50  0001 C CNN
 	1    7150 3750
 	-1   0    0    1   
-$EndComp
-$Comp
-L power:+5V #PWR0121
-U 1 1 5D035C6A
-P 7550 3600
-F 0 "#PWR0121" H 7550 3450 50  0001 C CNN
-F 1 "+5V" H 7565 3773 50  0000 C CNN
-F 2 "" H 7550 3600 50  0001 C CNN
-F 3 "" H 7550 3600 50  0001 C CNN
-	1    7550 3600
-	1    0    0    -1  
 $EndComp
 $Comp
 L power:+5V #PWR0122
@@ -804,4 +786,29 @@ Text GLabel 9450 4950 0    50   Output ~ 0
 SD_DETECT
 Text GLabel 2850 3150 0    50   Input ~ 0
 SD_DETECT
+NoConn ~ 6400 3700
+Text GLabel 8650 5600 1    50   Input ~ 0
+SD_3V3
+Wire Wire Line
+	6900 5900 7650 5900
+Connection ~ 8650 5900
+Wire Wire Line
+	8650 5900 9000 5900
+Text GLabel 6100 3450 1    50   Input ~ 0
+SD_3V3
+$Comp
+L 74xx:74LVC125 U1
+U 4 1 5CFD7F50
+P 6100 3700
+F 0 "U1" H 6100 3925 50  0000 C CNN
+F 1 "74LVC125" H 6100 4016 50  0000 C CNN
+F 2 "" H 6100 3700 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LVC125" H 6100 3700 50  0001 C CNN
+	4    6100 3700
+	1    0    0    1   
+$EndComp
+Text GLabel 5800 3450 1    50   Input ~ 0
+SD_3V3
+Wire Wire Line
+	5800 3450 5800 3700
 $EndSCHEMATC
