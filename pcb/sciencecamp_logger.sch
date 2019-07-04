@@ -739,29 +739,29 @@ Text GLabel 9450 4950 0    50   Output ~ 0
 SD_DETECT
 Text GLabel 2850 3150 0    50   Input ~ 0
 SD_DETECT
-NoConn ~ 6400 3700
+NoConn ~ 8600 2950
 Text GLabel 8650 5600 1    50   Input ~ 0
 SD_3V3
 Connection ~ 8650 5900
 Wire Wire Line
 	8650 5900 9000 5900
-Text GLabel 6100 3450 1    50   Input ~ 0
+Text GLabel 8300 2700 1    50   Input ~ 0
 SD_3V3
 $Comp
 L 74xx:74LVC125 U1
 U 4 1 5CFD7F50
-P 6100 3700
-F 0 "U1" H 6100 3925 50  0000 C CNN
-F 1 "74LVC125" H 6100 4016 50  0000 C CNN
-F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 6100 3700 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LVC125" H 6100 3700 50  0001 C CNN
-	4    6100 3700
+P 8300 2950
+F 0 "U1" H 8300 3175 50  0000 C CNN
+F 1 "74LVC125" H 8300 3266 50  0000 C CNN
+F 2 "Package_SO:TSSOP-14_4.4x5mm_P0.65mm" H 8300 2950 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LVC125" H 8300 2950 50  0001 C CNN
+	4    8300 2950
 	1    0    0    1   
 $EndComp
-Text GLabel 5800 3450 1    50   Input ~ 0
+Text GLabel 8000 2700 1    50   Input ~ 0
 SD_3V3
 Wire Wire Line
-	5800 3450 5800 3700
+	8000 2700 8000 2950
 $Comp
 L Device:C C4
 U 1 1 5D00D801
