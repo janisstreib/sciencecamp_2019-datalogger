@@ -681,12 +681,6 @@ Wire Wire Line
 	2350 3050 2850 3050
 Wire Wire Line
 	2350 3050 2350 4650
-Wire Wire Line
-	2250 2950 2250 3900
-Wire Wire Line
-	2250 2950 2850 2950
-Wire Wire Line
-	2850 3350 2100 3350
 $Comp
 L 74xx:74LVC125 U1
 U 5 1 5D0BA73C
@@ -863,8 +857,6 @@ $EndComp
 Wire Wire Line
 	2100 4000 1150 4000
 Wire Wire Line
-	2100 3350 2100 4000
-Wire Wire Line
 	2250 3900 1150 3900
 Wire Wire Line
 	8000 5900 8650 5900
@@ -930,4 +922,16 @@ F 3 "" H 7400 2850 50  0001 C CNN
 	1    7400 2850
 	1    0    0    -1  
 $EndComp
+Text Label 1300 4000 0    50   ~ 0
+ECHO
+Text Label 1300 3900 0    50   ~ 0
+TRIGGER
+Wire Wire Line
+	2100 2950 2100 4000
+Wire Wire Line
+	2100 2950 2850 2950
+Wire Wire Line
+	2250 3900 2250 3350
+Wire Wire Line
+	2250 3350 2850 3350
 $EndSCHEMATC
