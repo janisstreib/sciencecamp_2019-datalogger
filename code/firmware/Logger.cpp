@@ -63,7 +63,7 @@ double DataLogger::addDataPoint(DataSource* source, DataTarget* target, long tim
 }
 
 double TemperatureDataSource::getDataPoint() {
-    this->sensors->requestTemperatures();
+    this->sensors->requestTemperaturesByIndex(0);
     return this->sensors->getTempCByIndex(0);
 }
 
