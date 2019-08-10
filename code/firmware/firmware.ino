@@ -15,8 +15,9 @@
 #define FIRMWARE_VERSION "{VERSION}"
 #define LOG_INTERVAL 1000
 
-#define OWNER_NAME "Janis"
-#define DEBUG
+#define OWNER_NAME "N/A"
+
+//#define DEBUG
 
 #define ACTION_BUTTON 3
 #define SD_DETECT 4
@@ -89,7 +90,8 @@ void setup() {
     u8x8.setFlipMode(1);
     u8x8.setFont(u8x8_font_amstrad_cpc_extended_f);
     u8x8.clear();
-    u8x8.print("hallo");
+    u8x8.print(F("Hallo"));
+    u8x8.draw2x2UTF8(0,1,OWNER_NAME);
     pinMode(SD_DETECT, INPUT);
     digitalWrite(SD_DETECT, HIGH);
 
