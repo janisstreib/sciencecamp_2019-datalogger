@@ -3,6 +3,7 @@
 #include "Logger.h"
 #include <Arduino.h>
 #include <math.h>
+#include <SD.h>
 
 #define SONIC_SPEED 343.2f
 
@@ -11,7 +12,10 @@ int DataLogger::initSession(DataSource *sources[], DataTarget *targets[]) {
         return -1;
     }
     this->startTime = millis();
-    for(int i=0;i<sizeof(targets)/sizeof(targets[0]);i++) {
+    for(int i=0;i<2;i++) {
+        if(targets[i] == nullptr) {
+            continue;
+        }
         targets[i]->open(sources);
     }
     this->isLogging = true;
@@ -22,17 +26,22 @@ int DataLogger::endSession(DataTarget *targets[]) {
     if(!this->isLogging) {
         return -1;
     }
-    for(int i=0;i<sizeof(targets)/sizeof(targets[0]);i++) {
+    for(int i=0;i<2;i++) {
         targets[i]->close();   
     }
     this->isLogging = false;
     return true;
 }
 
-bool SerialDataTarget::writeDataPoint(DataLogger *logger, long time, double data) {
-    Serial.print(millis()-logger->startTime);
+bool SerialDataTarget::writeDataPoint(DataLogger *logger, long time, double data, bool lineAppend = false, bool lineEnd = true) {
+    if(!lineAppend) {
+        Serial.print(millis()-logger->startTime);
+    }
     Serial.print(',');
-    Serial.println(data);
+    Serial.print(data);
+    if(lineEnd) {
+        Serial.println();
+    }
     return true;
 }
 
@@ -43,22 +52,59 @@ bool SerialDataTarget::close() {
 
 bool SerialDataTarget::open(DataSource *sources[]) {
     Serial.println("Begin of logging.");
-    Serial.print("Zeit (ms),");
-    for(int i=0;i<sizeof(sources)/sizeof(sources[0]);i++) {
+    Serial.print("Zeit (ms)");
+    for(int i=0;i<2;i++) {
+        Serial.print(',');
         Serial.print(sources[i]->getYAxisName());
     }
     Serial.println();
     return true;
 }
 
-double DataLogger::addDataPoint(DataSource* source, DataTarget* target, long time) {
+bool SDDataTarget::open(DataSource *sources[]) {
+    sprintf(charbuf, "/SC_LOG/%d.csv",millis());
+    this->file = SD.open(charbuf, O_READ | O_WRITE | O_CREAT | O_APPEND);
+    this->file.print("Zeit (ms)");
+    for(int i=0;i<(sizeof(sources)/sizeof(sources[0]));i++) {
+        this->file.print(',');
+        this->file.print(sources[i]->getYAxisName());
+    }
+    this->file.println();
+    this->file.flush();
+    return true;
+}
+
+bool SDDataTarget::close() {
+    this->file.close();
+    return true;
+}
+
+bool SDDataTarget::writeDataPoint(DataLogger *logger, long time, double data, bool lineAppend = false, bool lineEnd = true) {
+    if(!lineAppend) {
+        this->file.print(millis()-logger->startTime);
+    }
+    this->file.print(',');
+    this->file.print(data);
+    if(lineEnd) {
+        this->file.println();
+    }
+    this->file.flush();
+    return true;
+}
+
+double DataLogger::addDataPoint(DataSource* source, DataTarget *targets[], long time, bool append = false, bool lineEnd = true) {
     double point = source->getDataPoint();
     source->lastData = point;
     this->lastLog = time;
     if(!this->isLogging) {
         return point;
     }
-    target->writeDataPoint(this, time, point);
+    for(int i=0;i<2;i++) {
+        if(targets[i] == nullptr) {
+            continue;
+        }
+        targets[i]->writeDataPoint(this, time, point, append, lineEnd);
+    }
     return point;
 }
 
@@ -67,7 +113,7 @@ double TemperatureDataSource::getDataPoint() {
     return this->sensors->getTempCByIndex(0);
 }
 
-String TemperatureDataSource::getYAxisName() {
+const char* TemperatureDataSource::getYAxisName() {
     return "Temperatur (°C)";
 }
 
@@ -82,8 +128,6 @@ double UltrasonicDistanceDataSource::getDataPoint() {
     }
     return dist;
 }
-String UltrasonicDistanceDataSource::getYAxisName() {
-    char out[50];
-    sprintf(out, "Distanz (cm @ %fm/s)", SONIC_SPEED);
-    return out;
+const char* UltrasonicDistanceDataSource::getYAxisName() {
+    return "cm @ 343.2 m/s";
 }
