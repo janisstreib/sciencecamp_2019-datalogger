@@ -48,12 +48,12 @@ bool SerialDataTarget::writeDataPoint(DataLogger *logger, long time, double data
 }
 
 bool SerialDataTarget::close() {
-    Serial.println("End of Logging.");
+    Serial.println(F("End of logging."));
     return true;
 }
 
 bool SerialDataTarget::open(DataSource *sources[]) {
-    Serial.println("Begin of logging.");
+    Serial.println(F("Begin of logging."));
     //Serial.print("Zeit (ms)");
     for(int i=0;i<2;i++) {
         if(i!=0) {
@@ -71,7 +71,7 @@ bool SDDataTarget::open(DataSource *sources[]) {
         sprintf(charbuf, "/SC_LOG/%04d.csv",f++);
     } while(SD.exists(charbuf));
     this->file = SD.open(charbuf, O_READ | O_WRITE | O_CREAT | O_APPEND);
-    this->file.print("Zeit (ms)");
+    this->file.print(F("Zeit (ms)"));
     for(int i=0;i<2;i++) {
         this->file.print(',');
         this->file.print(sources[i]->getYAxisName());

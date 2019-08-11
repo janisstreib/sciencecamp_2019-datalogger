@@ -1,5 +1,5 @@
 #define SERIAL_RX_BUFFER_SIZE 1
-#define SERIAL_TX_BUFFER_SIZE 32
+#define SERIAL_TX_BUFFER_SIZE 8
 
 #include <Arduino.h>
 
@@ -54,44 +54,29 @@ bool action_press_dispatch = false;
 bool long_action_press_dispatch = false;
 bool loop_tick = false;
 
-int page = 0;
+int screenPage = 0;
 
-const char convBuf[6];
+const char convBuf[7];
 
 void setup() {
     Serial.begin(9600);
-    Serial.print(F("SC_LOG v."));
-    Serial.println(FIRMWARE_VERSION);
 #ifdef DEBUG
+    Serial.print(F("SC_LOG v."));
+    Serial.println(F(FIRMWARE_VERSION));
     Serial.println(F(">>> DEBUG MODE <<<"));
 #endif
     pinMode(LED_BUILTIN, OUTPUT);
     pinMode(HC_SR_04_TRIG, OUTPUT);
     digitalWrite(HC_SR_04_TRIG, LOW);
     pinMode(HC_SR_04_ECHO, INPUT);
-   // if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
-   //     Serial.println(F("SSD1306 allocation failed"));
-   //     Serial.println(F("Proceeding without display..."));
-   // } else {
-   //     display.setRotation(2);
-   //     display.clearDisplay();
-   //     display.setTextSize(1);
-   //     display.setTextColor(WHITE); // Draw white text
-   //     display.setCursor(0, 0);     // Start at top-left corner
-   //     display.cp437(true);         // Use full 256 char 'Code Page 437' font
-   //     display.print("SC_LOG v.");
-   //     display.println(FIRMWARE_VERSION);
-   //     display.setTextSize(2);
-   //     display.println(OWNER_NAME);
-   //     display.display();
-        display_init = true;
-   // }
     u8x8.begin();
     u8x8.setFlipMode(1);
     u8x8.setFont(u8x8_font_amstrad_cpc_extended_f);
     u8x8.clear();
+    display_init = true;
     u8x8.print(F("Hallo"));
     u8x8.draw2x2UTF8(0,1,OWNER_NAME);
+
     pinMode(SD_DETECT, INPUT);
     digitalWrite(SD_DETECT, HIGH);
 
@@ -126,10 +111,7 @@ void loop() {
         actionButtonLongPressed();
         long_action_press_dispatch = false;
     }
-    bool didMeasure = measure();
-    if(display_init && render(didMeasure)) {
-//        display.display();
-    }
+    render(measure());
 }
 
 bool measure() {
@@ -152,17 +134,9 @@ bool render(bool didMeasure) {
     if(!didMeasure) {
         return false;
     }
-    //u8x8.clear();
-//    display.clearDisplay();
-//    display.setCursor(0,0);
-//    display.setTextSize(1);
-//    display.print("Bat.: ");
-//    display.print(bat_voltage);
-//    display.println("V");
-    switch(page){
+    switch(screenPage){
         case 0:
             u8x8.drawUTF8(0,1,tempDat.getYAxisName());
-            u8x8.setCursor(0,2);
             dtostrf(tempDat.lastData,5,2,convBuf);
             break;
         case 1:
@@ -178,7 +152,6 @@ bool render(bool didMeasure) {
     u8x8.clearLine(3);
     u8x8.draw2x2String(0,2,convBuf);
     if(logger.isLogging) {
-//        display.fillCircle(SCREEN_WIDTH - 9, 15, 4, WHITE);
         u8x8.setInverseFont(loop_tick);
         u8x8.drawString(u8x8.getCols()-3, 0, "Rec");
         u8x8.setInverseFont(false);
@@ -231,11 +204,12 @@ void handleActionButton() {
 }
 
 void actionButtonPressed() {
-    page++;
-    page = page%3;
+    screenPage++;
+    screenPage %= 3;
     u8x8.clearLine(1);
     u8x8.clearLine(2);
     u8x8.clearLine(3);
+    u8x8.draw2x2String(4,1,"...");
 }
 
 void actionButtonLongPressed() {

@@ -55,7 +55,7 @@ class SerialDataTarget: public DataTarget {
         bool open(DataSource *sources[]);
 };
 
-const char charbuf[50];
+const char charbuf[17];
 class SDDataTarget: public DataTarget {
     public:
         bool writeDataPoint(DataLogger *logger, long time, double data, bool lineAppend = false, bool lineEnd = true);
