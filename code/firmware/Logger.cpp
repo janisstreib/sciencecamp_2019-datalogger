@@ -34,10 +34,12 @@ int DataLogger::endSession(DataTarget *targets[]) {
 }
 
 bool SerialDataTarget::writeDataPoint(DataLogger *logger, long time, double data, bool lineAppend = false, bool lineEnd = true) {
-    if(!lineAppend) {
-        Serial.print(millis()-logger->startTime);
+   // if(!lineAppend) {
+   //     Serial.print(millis()-logger->startTime);
+   // }
+    if(lineAppend) {
+        Serial.print(',');
     }
-    Serial.print(',');
     Serial.print(data);
     if(lineEnd) {
         Serial.println();
@@ -52,9 +54,11 @@ bool SerialDataTarget::close() {
 
 bool SerialDataTarget::open(DataSource *sources[]) {
     Serial.println("Begin of logging.");
-    Serial.print("Zeit (ms)");
+    //Serial.print("Zeit (ms)");
     for(int i=0;i<2;i++) {
-        Serial.print(',');
+        if(i!=0) {
+            Serial.print(',');
+        }
         Serial.print(sources[i]->getYAxisName());
     }
     Serial.println();
