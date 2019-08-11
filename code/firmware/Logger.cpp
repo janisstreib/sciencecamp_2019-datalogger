@@ -62,10 +62,13 @@ bool SerialDataTarget::open(DataSource *sources[]) {
 }
 
 bool SDDataTarget::open(DataSource *sources[]) {
-    sprintf(charbuf, "/SC_LOG/%d.csv",millis());
+    int f = 1;
+    do {
+        sprintf(charbuf, "/SC_LOG/%04d.csv",f++);
+    } while(SD.exists(charbuf));
     this->file = SD.open(charbuf, O_READ | O_WRITE | O_CREAT | O_APPEND);
     this->file.print("Zeit (ms)");
-    for(int i=0;i<(sizeof(sources)/sizeof(sources[0]));i++) {
+    for(int i=0;i<2;i++) {
         this->file.print(',');
         this->file.print(sources[i]->getYAxisName());
     }
